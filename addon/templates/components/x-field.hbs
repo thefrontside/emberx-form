@@ -1,0 +1,9 @@
+{{#if label}}
+  <label for={{concat "x-field-" property}}>{{label}}</label>
+{{/if}}
+
+{{one-way-input
+  id=(concat "x-field-" property)
+  type="text" value=(get data property)
+  update=(action (mut (get data property)))
+}}
