@@ -1,4 +1,15 @@
-{{#x-form data=model as |form|}}
+{{#x-form data=model validations=DummyValidations as |form|}}
   {{form.field property="firstName" label="First Name"}}
   {{form.field property="lastName" label="Last Name"}}
+  {{#form.field property="favoriteBand" label="Favorite Band" as |value actions|}}
+    {{one-way-select
+      value=value
+      options=bands
+      update=(action actions.onChange)
+      onBlur=(action actions.onBlur)
+    }}
+  {{/form.field}}
+
+  <button {{action (pipe form.submit (action 'save'))}}>Save</button>
+  <button {{action (pipe form.revert (action 'cancel'))}}>Cancel</button>
 {{/x-form}}

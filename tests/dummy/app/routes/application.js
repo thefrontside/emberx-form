@@ -6,7 +6,7 @@ export default Ember.Route.extend({
       firstName: '',
       lastName: '',
       birthday: new Date(1986, 8, 18),
-      friends: ['brandon', 'charles', 'rob', 'alex', 'stephanie']
-    }
+      favoriteBand: 'Sonic Youth'
+    };
   }
 });

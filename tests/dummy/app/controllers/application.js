@@ -1,12 +1,19 @@
 import Ember from 'ember';
+import DummyValidations from '../validators/dummy';
 
 export default Ember.Controller.extend({
-  init() {
-    this.model = {
-      firstName: '',
-      lastName: '',
-      birthday: new Date(1986, 8, 18),
-      friends: ['charles', 'brandon', 'rob', 'alex', 'stephanie']
-    };
+  DummyValidations,
+
+  bands: ['Sonic Youth', 'Dinosaur Jr.', 'Shellac', 'Velvet Underground'],
+
+  actions: {
+    save(data) {
+      console.log('saving');
+      console.log(data);
+    },
+
+    cancel() {
+      console.log('reverting');
+    }
   }
 });
