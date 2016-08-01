@@ -2,8 +2,31 @@
   <label for={{concat "x-field-" property}}>{{label}}</label>
 {{/if}}
 
-{{one-way-input
-  id=(concat "x-field-" property)
-  type="text" value=(get data property)
-  update=(action (mut (get data property)))
-}}
+{{#unless hasBlock}}
+  {{one-way-input
+    id=(concat "x-field-" property)
+    type="text"
+    value=(get changeset property)
+    update=(action (mut (get changeset property)))
+    onBlur=(action validate property)
+  }}
+
+{{else}}
+  {{yield
+    (get changeset property)
+    (hash
+      onChange=(action (mut (get changeset property)))
+      onBlur=(action validate property)
+    )
+  }}
+{{/unless}}
+
+{{#if (get changeset.error property)}}
+  <small>
+    <ul class={{concat "list-unstyled validation-list-" property}}>
+      {{#each (get (get changeset.error property) "validation") as |message|}}
+        <li>{{message}}</li>
+      {{/each}}
+    </ul>
+  </small>
+{{/if}}

@@ -1,5 +1,12 @@
-{{yield
-  (hash
-    field=(component "x-field" changeset=data)
-  )
-}}
+{{#with (changeset data validations) as |changeset|}}
+  {{yield
+    (hash
+      field=(component "x-field"
+        changeset=changeset
+        validate=(action 'validateProperty' changeset)
+      )
+      submit=(action 'submit' changeset)
+      revert=(action 'revert' changeset)
+    )
+  }}
+{{/with}}
