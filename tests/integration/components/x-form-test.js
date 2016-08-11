@@ -1,36 +1,79 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-import SimpleValidations from '../../test-utils/validations';
+import { SimpleValidations, SimpleData } from '../../test-utils/validations';
 
 moduleForComponent('x-form', 'Integration | Component | x form', {
   integration: true
 });
 
-test('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  this.set('data', {
-    firstName: '',
-  });
+test('it cannot be instantiated without data', function(assert) {
+  assert.expect(1);
+  let err = null;
+  try { this.render(hbs`{{x-form}}`); } catch(e) { err = e; }
+  assert.ok(err, 'x-form cannot render without data attribute');
+});
 
-  this.set('validations', SimpleValidations);
-  // Handle any actions with this.on('myAction', function(val) { ... });
+test('it renders with data', function(assert) {
+  assert.expect(1);
+  let err = null;
+  try { this.render(hbs`{{x-form data=(hash)}}`); } catch(e) { err = e; }
+  assert.notOk(err, 'x-form renders with a data attribute');
+});
+
+test('observing form actions', function(assert) {
+  assert.expect(2);
+  this.set('data', SimpleData);
+
+  this.set('submit', () => assert.ok(true) );
+  this.set('cancel', () => assert.ok(true) );
 
   // Template block usage:
   this.render(hbs`
-    {{#x-form data=data validations=validations as |form|}}
-      {{form.field property="firstName" label="First Name"}}
-
-      <button data-test-form-submit {{action form.submit}}>Save</button>
-      <button data-test-form-revert {{action form.revert}}>Revert</button>
+    {{#x-form
+       data=data
+       onSubmit=submit
+       onCancel=cancel
+       as |form|
+    }}
+      <button class='submit' {{action form.actions.onSubmit}}>Submit</button>
+      <button class='cancel' {{action form.actions.onCancel}}>Cancel</button>
     {{/x-form}}
   `);
 
-  assert.equal(this.$('form input').length, 1, 'should have 1 input field');
-  assert.equal(this.$('form label[for="x-field-firstName"]').text().trim(), 'First Name', 'label should be "First Name"');
+  this.$('.submit').click();
+  this.$('.cancel').click();
 
-  // this.$('.x-field-firstName').val('John');
-  // this.$('.x-field-firstName').change();
-  //
-  // this.$('[data-test-form-submit]').click();
 });
+
+// test('simple validations', function(assert) {
+//   // Set any properties with this.set('myProperty', 'value');
+//   this.set('data', SimpleData);
+
+//   this.set('validations', SimpleValidations);
+//   // Handle any actions with this.on('myAction', function(val) { ... });
+
+//   // Template block usage:
+//   this.render(hbs`
+//     {{#x-form data=data validations=validations as |form|}}
+//       {{#form.field
+//          class="field-firstName"
+//          property="firstName"
+//          label="First Name"
+//          as |field|
+//       }}
+//         <button on-click=form.actions.onSubmit'>Check Validity</button>
+//       {{/form.field}}
+//     {{/x-form}}
+//   `);
+
+//   debugger;
+
+//   assert.equal(this.$('form > div').length, 1, 'should have a form');
+
+
+//   // this.$('.x-field-firstName').val('John');
+//   // this.$('.x-field-firstName').change();
+//   //
+//   // this.$('[data-test-submit();
+// });

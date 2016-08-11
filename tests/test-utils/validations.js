@@ -3,6 +3,10 @@ import {
   validateLength
 } from 'ember-changeset-validations/validators';
 
+export const SimpleData = {
+  firstName: 'Florance'
+};
+
 export const SimpleValidations = {
   firstName: [
     validatePresence(true),
