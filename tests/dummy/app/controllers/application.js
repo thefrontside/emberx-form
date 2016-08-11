@@ -10,6 +10,15 @@ export default Ember.Controller.extend({
     save(data) {
       console.log('saving');
       console.log(data);
+      return Ember.RSVP.resolve(data);
+    },
+
+    onError(err) {
+      throw new Error(err);
+    },
+
+    onSuccess() {
+      console.log('succeeded!');
     },
 
     cancel() {

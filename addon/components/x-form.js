@@ -1,46 +1,122 @@
 import Ember from 'ember';
-import { PropTypes as P } from 'ember-prop-types';
-import layout from '../templates/components/x-form';
 import applyChangeset from '../utils/apply-changeset';
+import layout from '../templates/components/x-field';
 
-const { get } = Ember;
+const { get, set, RSVP } = Ember;
 
+
+/**
+ * Wraps a native `<form>` element and provides abstractions for working with `ember-changeset`
+ * and `ember-changeset-validations`. It yields a contextual component, `x-field`, which is used
+ * to construct the fields of the form.
+ *
+ * `onSubmit` will be called when the form is submitted with a valid changeset.
+ * `onSuccess` is optional, and will be called only if the `submit` action returns a resolved
+ * promise
+ * @class Ember.XFormComponent
+ * @extends Ember.Component
+ */
 export default Ember.Component.extend({
   layout,
 
   tagName: 'form',
 
-  propTypes: {
-    data: P.oneOfType([
-      P.array,
-      P.object,
-      P.EmberObject,
-    ]).isRequired,
-    validations: P.object,
-  },
+  /**
+   * @property data - provides the initial values of the form fields
+   * @type {Object}
+   */
+  data: null,
+
+   /**
+    * @property validations - A Validation map from ember-changeset-validations
+    * @type {Changeset.Validation}
+    */
+  validations: null,
+
+  /**
+   * A flag for indicating whether the form is currently in the process of submitting
+   * @private
+   * @type {Boolean}
+   */
+  isSubmitting: false,
+
+   /**
+    * @property onSubmit - Handler for the form's submit behavior. `onSubmit` will be called when
+    * the form is submitted with a valid changeset.
+    * @type {Function}
+    */
+  onSubmit: null,
+
+   /**
+    * @property onSuccess - Handler for when `onSubmit` succeeds, called when `onSubmit` returns
+    * a resolved Promise
+    * @type {Function}
+    */
+  onSuccess: Ember.K,
+
+  /**
+   * @property onError - Handler for errors resulting from the `onSubmit` action, callend when
+   * `onSubmit` returns a rejected Promise
+   * @type {Function}
+   */
+  onError: Ember.K,
+
+  /**
+   * @property onCancel - Action for cancel/close behavior
+   * @type {Function}
+   */
+  onCancel: Ember.K,
 
   actions: {
-    // validateProperty :: (Changeset, String) -> Promise
+    /**
+     * [validateProperty call the validations for a specific property in a changeset]
+     * @param  {Changeset} changeset An instance of ember-changeset
+     * @param  {string}    prop The name of a property in the changeset
+     * @return {Promise}
+     */
     validateProperty(changeset, prop) {
       return changeset.validate(prop);
     },
 
-    // submit :: Changeset -> Result
-    submit(changeset) {
-      console.log('x-form save');
-      return changeset.validate()
+    /**
+     * The submit behavior for the form. `onSubmit` validates the changeset, and assuming the
+     * changes are valid, applies the changeset and passes the resuling to POJO into the `onSubmit`
+     * closure action. If an `onSuccess` action has also been passed in, it will be then be called
+     * once the `onSubmit` action has completed
+     * @param  {Changeset} changeset
+     */
+    onSubmit(changeset) {
+      set(this, 'isSubmitting', true);
+
+      changeset.validate()
         .then(() => {
           if (get(changeset, 'isValid')) {
-            let newData = applyChangeset(changeset);
-            console.log(newData);
-            return newData;
+            let changes = applyChangeset(changeset);
+            let submission = get(this, 'onSubmit')(changes);
+
+            return RSVP.resolve(submission)
+              .then((record) => {
+                set(this, 'isSubmitting', false);
+                return get(this, 'onSuccess')(record);
+              })
+              .catch((err) => {
+                return get(this, 'onError')(err);
+              });
           }
+        })
+        .finally(() => {
+          set(this, 'isSubmitting', false);
         });
     },
 
-    // revert :: Changeset -> Promise
-    revert(changeset) {
-      return changeset.rollback();
+    /**
+     * Rollback the changeset (thereby clearing the form)
+     * @param  {Changeset} changeset
+     * @return {Promise}
+     */
+    onCancel(changeset) {
+      changeset.rollback();
+      get(this, 'onCancel')();
     }
   }
 });
