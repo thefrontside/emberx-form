@@ -1,156 +1,147 @@
+/* jshint expr:true */
 import Ember from 'ember';
-import { moduleForComponent, test } from 'ember-qunit';
+import { expect } from 'chai';
+import { describeComponent, it } from 'ember-mocha';
+import { describe, beforeEach } from 'mocha';
 import hbs from 'htmlbars-inline-precompile';
 
-import { SimpleValidations, SimpleData } from '../../test-utils/validations';
+import { /*SimpleValidations,*/ SimpleData } from '../../test-utils/validations';
 
-moduleForComponent('x-form', 'Integration | Component | x form', {
-  integration: true
-});
+describeComponent(
+  'emberx-form-mocha',
+  'Integration: EmberxFormComponent',
+  {
+    integration: true
+  },
+  function() {
+    beforeEach(function() {
+      this.count = 0;
+      this.set('data', SimpleData);
+      this.set('inc', () => {
+        return this.count++;
+      });
+      this.set('submit', (buffer) => {
+        this.buffer = buffer;
+        return this.promise = new Ember.RSVP.Promise(() => {});
+      });
+    });
 
-test('it cannot be instantiated without data', function(assert) {
-  assert.expect(1);
-  let err = null;
-  try { this.render(hbs`{{x-form}}`); } catch(e) { err = e; }
-  assert.ok(err, 'x-form cannot render without data attribute');
-});
+    describe("rendering x-form without data", function() {
+      beforeEach(function() {
+        try {
+          this.render(hbs`{{x-form}}`);
+        } catch(e) {
+          this.err = e;
+        }
+      });
+      it("cannot be rendered", function() {
+        expect(this.err).to.exist;
+      });
+    });
 
-test('rendering the blockless form with data', function(assert) {
-  assert.expect(2);
-  let err = null;
-  try { this.render(hbs`{{x-form data=(hash)}}`); } catch(e) { err = e; }
-  assert.equal(this.$('form').length, 1, 'it renders the form');
-  assert.notOk(err, 'it renders x-form without errors');
-});
+    describe("rendering x-form with data", function() {
+      beforeEach(function() {
+        try {
+          this.render(hbs`{{x-form data=data}}`);
+        } catch(e) {
+          this.err = e;
+        }
+      });
+      it("renders the form", function() {
+        expect(this.err).not.to.exist;
+      });
+    });
 
-test('observing form actions', function(assert) {
-  assert.expect(2);
-  this.set('data', SimpleData);
-
-  this.set('submit', () => assert.ok(true) );
-  this.set('cancel', () => assert.ok(true) );
-
-  // Template block usage:
-  this.render(hbs`
+    describe("observing form actions", function() {
+      beforeEach(function() {
+        this.render(hbs`
     {{#x-form
-       data=data
-       onSubmit=submit
-       onCancel=cancel
-       as |form|
+      data=data
+      onSubmit=inc
+      onCancel=inc
+      as |form|
     }}
       <button class='submit' {{action form.actions.onSubmit}}>Submit</button>
       <button class='cancel' {{action form.actions.onCancel}}>Cancel</button>
     {{/x-form}}
   `);
+      });
+      describe("clicking sumbit", function() {
+        beforeEach(function() {
+          this.$('.submit').click();
+        });
+        it("fires onSubmit action", function() {
+          expect(this.count).to.equal(1);
+        });
+      });
+      describe("clicking cancel", function() {
+        beforeEach(function() {
+          this.$('.cancel').click();
+        });
+        it("fires onCancel action", function() {
+          expect(this.count).to.equal(1);
+        });
+      });
 
-  this.$('.submit').click();
-  this.$('.cancel').click();
-});
 
-test('submission is in flight', function(assert) {
-  assert.expect(2);
-  this.set('data', SimpleData);
-
-  this.set('submit', () => new Ember.RSVP.Promise(() => {}) );
-
-  // Template block usage:
-  this.render(hbs`
+    });
+    describe("the form submit cycle", function() {
+      beforeEach(function() {
+        this.render(hbs`
     {{#x-form
-       data=data
-       onSubmit=submit
-       onSuccess=success
-       as |form|
+      data=data
+      onSubmit=submit
+      onSuccess=inc
+      onError=inc
+      as |form|
     }}
       <button class='submit' {{action form.actions.onSubmit}}>Submit</button>
       <div class={{if form.isSubmitting "in-flight"}}></div>
     {{/x-form}}
   `);
+      });
+      describe("before submitting the form", function() {
+        it("is not in flight", function() {
+          expect(this.$('.in-flight').length).to.equal(0);
+        });
 
-  assert.notOk(this.$('.in-flight').length);
+        describe("clicking submit", function() {
+          beforeEach(function() {
+            this.set('submit', () => new Ember.RSVP.Promise(() => {}) );
+            this.$('.submit').click();
+          });
+          it("is in flight", function() {
+            expect(this.$('.in-flight').length).to.equal(1);
+            expect(this.count).to.equal(0);
+          });
+        });
 
-  this.$('.submit').click(); // Triggers an unresolved promise
+        describe("resolving submit", function() {
+          beforeEach(function() {
+            this.set('submit', () => Ember.RSVP.Promise.resolve("Success") );
+            return this.$('.submit').click();
+          });
+          it("is no longer in flight", function() {
+            expect(this.$('.in-flight').length).to.equal(0);
+          });
+          it("calls onSuccess function", function() {
+            expect(this.count).to.equal(1);
+          });
+        });
 
-  assert.ok(this.$('.in-flight').length);
-});
-
-test('success on submit', function(assert) {
-  assert.expect(1);
-  this.set('data', SimpleData);
-
-  this.set('submit', () => Ember.RSVP.Promise.resolve("Success") );
-  this.set('success', () => {
-    assert.notOk(this.$('.in-flight').length, 'the records is not in flight');
-  });
-
-  // Template block usage:
-  this.render(hbs`
-    {{#x-form
-       data=data
-       onSubmit=submit
-       onSuccess=success
-       as |form|
-    }}
-      <button class='submit' {{action form.actions.onSubmit}}>Submit</button>
-      <div class={{if form.isSubmitting "in-flight"}}></div>
-    {{/x-form}}
-  `);
-
-  this.$('.submit').click();
-});
-
-test('error on submit', function(assert) {
-  assert.expect(1);
-  this.set('data', SimpleData);
-
-  this.set('submit', () => Ember.RSVP.Promise.reject("Error") );
-  this.set('error', () => {
-    assert.notOk(this.$('.in-flight').length, 'the records is not in flight');
-  });
-
-  // Template block usage:
-  this.render(hbs`
-    {{#x-form
-       data=data
-       onSubmit=submit
-       onError=error
-       as |form|
-    }}
-      <button class='submit' {{action form.actions.onSubmit}}>Submit</button>
-      <div class={{if form.isSubmitting "in-flight"}}></div>
-    {{/x-form}}
-  `);
-
-  this.$('.submit').click();
-});
-
-// test('simple validations', function(assert) {
-//   // Set any properties with this.set('myProperty', 'value');
-//   this.set('data', SimpleData);
-
-//   this.set('validations', SimpleValidations);
-//   // Handle any actions with this.on('myAction', function(val) { ... });
-
-//   // Template block usage:
-//   this.render(hbs`
-//     {{#x-form data=data validations=validations as |form|}}
-//       {{#form.field
-//          class="field-firstName"
-//          property="firstName"
-//          label="First Name"
-//          as |field|
-//       }}
-//         <button on-click=form.actions.onSubmit'>Check Validity</button>
-//       {{/form.field}}
-//     {{/x-form}}
-//   `);
-
-//   debugger;
-
-//   assert.equal(this.$('form > div').length, 1, 'should have a form');
-
-
-//   // this.$('.x-field-firstName').val('John');
-//   // this.$('.x-field-firstName').change();
-//   //
-//   // this.$('[data-test-submit();
-// });
+        describe("rejecting submit", function() {
+          beforeEach(function() {
+            this.set('submit', () => Ember.RSVP.Promise.reject("Error") );
+            return this.$('.submit').click();
+          });
+          it("is no longer in flight", function() {
+            expect(this.$('.in-flight').length).to.equal(0);
+          });
+          it("calls onError function", function() {
+            expect(this.count).to.equal(1);
+          });
+        });
+      });
+    });
+  }
+);
