@@ -5,7 +5,7 @@ import { describeComponent, it } from 'ember-mocha';
 import { describe, beforeEach } from 'mocha';
 import hbs from 'htmlbars-inline-precompile';
 
-import { /*SimpleValidations,*/ SimpleData } from '../../test-utils/validations';
+import { SimpleValidations, SimpleData } from '../../test-utils/validations';
 
 describeComponent(
   'emberx-form-mocha',
@@ -15,14 +15,14 @@ describeComponent(
   },
   function() {
     beforeEach(function() {
-      this.count = 0;
+      let deferred = this.deferred = Ember.RSVP.defer();
+
       this.set('data', SimpleData);
-      this.set('inc', () => {
-        return this.count++;
-      });
-      this.set('submit', (buffer) => {
+      this.set('validations', SimpleValidations);
+
+      this.set('on-submit', (buffer) => {
         this.buffer = buffer;
-        return this.promise = new Ember.RSVP.Promise(() => {});
+        return deferred.promise;
       });
     });
 
@@ -52,93 +52,115 @@ describeComponent(
       });
     });
 
-    describe("observing form actions", function() {
+    describe("observing actions", function() {
       beforeEach(function() {
+        this.didCall = {
+          onSubmit: false,
+          onCancel: false
+        };
+        this.set('on-submit', () => this.didCall.onSubmit = true);
+        this.set('on-cancel', () => this.didCall.onCancel = true);
+
         this.render(hbs`
     {{#x-form
       data=data
-      onSubmit=inc
-      onCancel=inc
+      onSubmit=on-submit
+      onCancel=on-cancel
       as |form|
     }}
-      <button class='submit' {{action form.actions.onSubmit}}>Submit</button>
-      <button class='cancel' {{action form.actions.onCancel}}>Cancel</button>
+      <button class='submit' {{action form.actions.onSubmit}}></button>
+      <button class='cancel' {{action form.actions.onCancel}}></button>
     {{/x-form}}
   `);
+      });
+      it("does not fire actions on render", function() {
+        expect(this.didCall.onSubmit).to.be.false;
+        expect(this.didCall.onCancel).to.be.false;
       });
       describe("clicking sumbit", function() {
         beforeEach(function() {
           this.$('.submit').click();
         });
-        it("fires onSubmit action", function() {
-          expect(this.count).to.equal(1);
+        it("fires the onSubmit action", function() {
+          expect(this.didCall.onSubmit).to.be.true;
         });
       });
       describe("clicking cancel", function() {
         beforeEach(function() {
           this.$('.cancel').click();
         });
-        it("fires onCancel action", function() {
-          expect(this.count).to.equal(1);
+        it("fires the onCancel action", function() {
+          expect(this.didCall.onCancel).to.be.true;
         });
       });
-
-
     });
-    describe("the form submit cycle", function() {
+
+
+    describe("when submit returns a promise", function() {
       beforeEach(function() {
+        this.didCall = {
+          onSuccess: false,
+          onError: false
+        };
+        this.set('on-success', () => this.didCall.onSuccess = true);
+        this.set('on-error', () => this.didCall.onError = true);
+
         this.render(hbs`
     {{#x-form
       data=data
-      onSubmit=submit
-      onSuccess=inc
-      onError=inc
+      onSubmit=on-submit
+      onSuccess=on-success
+      onError=on-error
       as |form|
     }}
-      <button class='submit' {{action form.actions.onSubmit}}>Submit</button>
-      <div class={{if form.isSubmitting "in-flight"}}></div>
+      <button class='submit' {{action form.actions.onSubmit}} disabled={{form.isSubmitting}}></button>
     {{/x-form}}
   `);
       });
-      describe("before submitting the form", function() {
-        it("is not in flight", function() {
-          expect(this.$('.in-flight').length).to.equal(0);
+
+      it("is not in flight", function() {
+        let formSubmit = this.$('.submit');
+        expect(formSubmit.prop('disabled')).to.be.false;
+        expect(this.didCall.onSuccess).to.be.false;
+        expect(this.didCall.onError).to.be.false;
+      });
+
+      describe("clicking sumbit", function() {
+        beforeEach(function() {
+          this.$('.submit').click();
+        });
+        it("is in flight", function() {
+          let formSubmit = this.$('.submit');
+          expect(formSubmit.prop('disabled')).to.be.true;
+          expect(this.didCall.onSuccess).to.be.false;
+          expect(this.didCall.onError).to.be.false;
         });
 
-        describe("clicking submit", function() {
+        describe("resolving the submission", function() {
           beforeEach(function() {
-            this.set('submit', () => new Ember.RSVP.Promise(() => {}) );
-            this.$('.submit').click();
-          });
-          it("is in flight", function() {
-            expect(this.$('.in-flight').length).to.equal(1);
-            expect(this.count).to.equal(0);
-          });
-        });
-
-        describe("resolving submit", function() {
-          beforeEach(function() {
-            this.set('submit', () => Ember.RSVP.Promise.resolve("Success") );
-            return this.$('.submit').click();
+            this.deferred.resolve("Success");
           });
           it("is no longer in flight", function() {
-            expect(this.$('.in-flight').length).to.equal(0);
+            let formSubmit = this.$('.submit');
+            expect(formSubmit.prop('disabled')).to.be.false;
           });
           it("calls onSuccess function", function() {
-            expect(this.count).to.equal(1);
+            expect(this.didCall.onSuccess).to.be.true;
+            expect(this.didCall.onError).to.be.false;
           });
         });
 
-        describe("rejecting submit", function() {
+        describe("rejecting the submission", function() {
           beforeEach(function() {
-            this.set('submit', () => Ember.RSVP.Promise.reject("Error") );
-            return this.$('.submit').click();
+            this.deferred.reject("Error");
           });
           it("is no longer in flight", function() {
-            expect(this.$('.in-flight').length).to.equal(0);
+            let formSubmit = this.$('.submit');
+            expect(formSubmit.prop('disabled')).to.be.false;
           });
           it("calls onError function", function() {
-            expect(this.count).to.equal(1);
+            expect(this.didCall.onError).to.be.true;
+            expect(this.didCall.onSuccess).to.be.false;
           });
         });
       });
