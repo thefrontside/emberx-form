@@ -98,8 +98,8 @@ export default Ember.Component.extend({
               .then((record) => {
                 set(this, 'isSubmitting', false);
                 return get(this, 'onSuccess')(record);
-              })
-              .catch((err) => {
+              }, (err) => {
+                set(this, 'isSubmitting', false);
                 return get(this, 'onError')(err);
               });
           }
