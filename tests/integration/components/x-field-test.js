@@ -1,25 +1,27 @@
-import { moduleForComponent, test } from 'ember-qunit';
-import { skip } from 'qunit';
+/* jshint expr:true */
+import { expect } from 'chai';
+import { describeComponent, it } from 'ember-mocha';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('x-field', 'Integration | Component | x field', {
-  integration: true
-});
+describeComponent(
+  'x-field',
+  'Integration: XFieldComponent',
+  {
+    integration: true
+  },
+  function() {
+    it('renders', function() {
+      // Set any properties with this.set('myProperty', 'value');
+      // Handle any actions with this.on('myAction', function(val) { ... });
+      // Template block usage:
+      // this.render(hbs`
+      //   {{#x-field-test}}
+      //     template content
+      //   {{/x-field-test}}
+      // `);
 
-skip('it renders', function(assert) {
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
-
-  this.render(hbs`{{x-field}}`);
-
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#x-field}}
-      template block text
-    {{/x-field}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
-});
+      this.render(hbs`{{x-field}}`);
+      expect(this.$()).to.have.length(1);
+    });
+  }
+);

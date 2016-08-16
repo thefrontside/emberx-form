@@ -10,8 +10,8 @@
       isInvalid=changeset.isInvalid
       isUnsubmittable=(or changeset.isPristine changeset.isInvalid isSubmitting)
       actions=(hash
-        onSubmit=(action 'onSubmit' changeset)
-        onCancel=(action 'onCancel' changeset)
+        submit=(action 'submit' changeset)
+        cancel=(action 'cancel' changeset)
       )
     )
   }}

@@ -1,10 +1,16 @@
-import applyChangeset from 'dummy/utils/apply-changeset';
-import { module, test, skip } from 'qunit';
+/* jshint expr:true */
+import { expect } from 'chai';
+import { describe, it, beforeEach } from 'mocha';
+import applyChangeset from 'emberx-form/utils/apply-changeset';
 
-module('Unit | Utility | apply changeset');
+describe('applyChangeset', function() {
+  // Replace this with your real tests.
+  beforeEach(function() {
+    let changeset = {};
+    this.result = applyChangeset(changeset);
+  });
 
-// Replace this with your real tests.
-skip('it works', function(assert) {
-  let result = applyChangeset();
-  assert.ok(result);
+  it('works', function() {
+    expect(this.result).to.be.ok;
+  });
 });
