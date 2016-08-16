@@ -55,7 +55,7 @@ export default Ember.Component.extend({
   onSuccess: Ember.K,
 
   /**
-   * @property onError - Handler for errors resulting from the `onSubmit` action, callend when
+   * @property onError - Handler for errors resulting from the `onSubmit` action, called when
    * `onSubmit` returns a rejected Promise
    * @type {Function}
    */
@@ -65,7 +65,7 @@ export default Ember.Component.extend({
    * @property onCancel - Action for cancel/close behavior
    * @type {Function}
    */
-  onCancel: Ember.K,
+  cancel: Ember.K,
 
   actions: {
     /**
@@ -79,13 +79,13 @@ export default Ember.Component.extend({
     },
 
     /**
-     * The submit behavior for the form. `onSubmit` validates the changeset, and assuming the
-     * changes are valid, applies the changeset and passes the resuling to POJO into the `onSubmit`
+     * The submit behavior for the form. `submit` validates the changeset, and assuming the
+     * changes are valid, applies the changeset and passes the resuling to POJO into the `submit`
      * closure action. If an `onSuccess` action has also been passed in, it will be then be called
-     * once the `onSubmit` action has completed
+     * once the `submit` action has completed
      * @param  {Changeset} changeset
      */
-    onSubmit(changeset) {
+    submit(changeset) {
       set(this, 'isSubmitting', true);
 
       changeset.validate()
@@ -114,7 +114,7 @@ export default Ember.Component.extend({
      * @param  {Changeset} changeset
      * @return {Promise}
      */
-    onCancel(changeset) {
+    cancel(changeset) {
       changeset.rollback();
       get(this, 'onCancel')();
     }

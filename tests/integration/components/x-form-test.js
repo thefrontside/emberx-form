@@ -68,8 +68,8 @@ describeComponent(
       onCancel=on-cancel
       as |form|
     }}
-      <button class='submit' {{action form.actions.onSubmit}}></button>
-      <button class='cancel' {{action form.actions.onCancel}}></button>
+      <button class='submit' {{action form.actions.submit}}></button>
+      <button class='cancel' {{action form.actions.cancel}}></button>
     {{/x-form}}
   `);
       });
@@ -81,7 +81,7 @@ describeComponent(
         beforeEach(function() {
           this.$('.submit').click();
         });
-        it("fires the onSubmit action", function() {
+        it("fires the submit action", function() {
           expect(this.didCall.onSubmit).to.be.true;
         });
       });
@@ -89,7 +89,7 @@ describeComponent(
         beforeEach(function() {
           this.$('.cancel').click();
         });
-        it("fires the onCancel action", function() {
+        it("fires the cancel action", function() {
           expect(this.didCall.onCancel).to.be.true;
         });
       });
@@ -113,7 +113,7 @@ describeComponent(
       onError=on-error
       as |form|
     }}
-      <button class='submit' {{action form.actions.onSubmit}} disabled={{form.isSubmitting}}></button>
+      <button class='submit' {{action form.actions.submit}} disabled={{form.isSubmitting}}></button>
     {{/x-form}}
   `);
       });
