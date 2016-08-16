@@ -101,7 +101,7 @@ export default Ember.Component.extend({
               }, (err) => {
                 set(this, 'isSubmitting', false);
                 return get(this, 'onError')(err);
-              })
+              });
           }
         })
         .finally(() => {
