@@ -1,6 +1,6 @@
-# Emberx-form
+# emberx-form
 
-This README outlines the details of collaborating on this Ember addon.
+<Sweet Tagline Here>
 
 ## Installation
 
