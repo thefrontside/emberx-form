@@ -32,8 +32,9 @@ before_install:
   - npm config set spin false
   - npm install -g bower
   - bower --version
-  - npm install phantomjs-prebuilt
-  - phantomjs --version
+  - export CHROME_BIN=/usr/bin/google-chrome
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 
 install:
   - npm install
