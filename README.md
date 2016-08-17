@@ -1,4 +1,6 @@
 # emberx-form
+[![npm version](https://badge.fury.io/js/emberx-form.svg)](http://badge.fury.io/js/emberx-form)
+[![Build Status](https://travis-ci.org/thefrontside/emberx-form.svg?branch=master)](https://travis-ci.org/thefrontside/emberx-form)
 
 <Sweet Tagline Here>
 
