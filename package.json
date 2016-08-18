@@ -50,8 +50,8 @@
     "changeset"
   ],
   "dependencies": {
-    "ember-changeset": "0.13.3",
-    "ember-changeset-validations": "^0.9.3",
+    "ember-changeset": "^1.0.0",
+    "ember-changeset-validations": "^1.0.0",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3",
     "ember-truth-helpers": "1.2.0"
