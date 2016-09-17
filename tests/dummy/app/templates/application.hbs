@@ -1,6 +1,24 @@
+{{#test-form data=model.obj as |form|}}
+  {{#form.field property='firstName' as |field|}}
+    {{one-way-input
+      value=field.value
+      update=field.actions.onChange
+    }}
+  {{/form.field}}
+  {{#form.field property="favoriteBand" as |field|}}
+    {{one-way-select
+      value=field.value
+      options=bands
+      update=field.actions.onChange
+    }}
+  {{/form.field}}
+  <button {{action form.actions.submit}}>Save</button>
+  <button {{action form.actions.cancel}}>Cancel</button>
+{{/test-form}}
+
 {{#x-form
   class="test-form"
-  data=model
+  data=model.obj
   validations=DummyValidations
   onSubmit=(action 'save')
   onSuccess=(action 'onSuccess')
