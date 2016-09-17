@@ -1,0 +1,13 @@
+{{yield
+  (hash
+    buffer=buffer
+    field=(component "test-field"
+      buffer=buffer
+      update=(action 'update' buffer)
+    )
+    actions=(hash
+      submit=(action 'submit' buffer)
+      cancel=(action 'cancel' buffer)
+    )
+  )
+}}

@@ -1,0 +1,9 @@
+      {{!-- onChange=(action 'onUpdate' property) --}}
+{{yield
+  (hash
+    value=(x-get buffer property)
+    actions=(hash
+      onChange=(action update property)
+    )
+  )
+}}

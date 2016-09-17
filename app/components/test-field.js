@@ -1,0 +1,1 @@
+export { default } from 'emberx-form/components/test-field';
