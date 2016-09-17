@@ -19,6 +19,7 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
     "ember-ajax": "^2.0.1",
+    "ember-browserify": "1.1.13",
     "ember-cli": "2.7.0",
     "ember-cli-app-version": "^1.0.0",
     "ember-cli-dependency-checker": "^1.2.0",
@@ -50,6 +51,7 @@
     "changeset"
   ],
   "dependencies": {
+    "change-buffer": "file:///Users/cf_frontside/oss/javascript/change-buffer",
     "ember-changeset-validations": "^1.0.2",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3",
