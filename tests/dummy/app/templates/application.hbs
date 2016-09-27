@@ -1,48 +1,60 @@
-{{#x-form
-  class="test-form"
-  data=model
-  validations=DummyValidations
-  onSubmit=(action 'save')
-  onSuccess=(action 'onSuccess')
-  onError=(action 'onError')
-  onCancel=(action 'cancel') as |form|
-}}
-  <div>
-    <h3>First Name</h3>
-    {{#form.field property="firstName" as |field|}}
-      {{one-way-input
-        value=field.value
-        update=field.actions.onChange
-        onBlur=field.actions.onBlur
+<div class="container">
+  <h2>Welcome to EmberX-Form!</h2>
+  <div class="row">
+    <div class="col-md-6">
+      {{#x-form
+        class="test-form"
+        data=model
+        validations=DummyValidations
+        onSubmit=(action 'save')
+        onSuccess=(action 'onSuccess')
+        onError=(action 'onError')
+        onCancel=(action 'cancel') as |form|
       }}
-    {{/form.field}}
+        <div class="form-group">
+          <h3>First Name</h3>
+          {{#form.field property="firstName" as |field|}}
+            {{one-way-input
+              class="form-control"
+              id="form-first-name"
+              value=field.value
+              update=field.actions.onChange
+              onBlur=field.actions.onBlur
+            }}
+          {{/form.field}}
+        </div>
+
+        <div class="form-group">
+          <h3>Last Name</h3>
+          {{#form.field property="lastName" as |field|}}
+            {{one-way-input
+              class="form-control"
+              value=field.value
+              update=field.actions.onChange
+              onBlur=field.actions.onBlur
+            }}
+          {{/form.field}}
+        </div>
+
+        <div class="form-group">
+          <h3>Favorite Band</h3>
+          {{#form.field property="favoriteBand" as |field|}}
+            {{one-way-select
+              class="form-control"
+              value=field.value
+              options=bands
+              update=field.actions.onChange
+              onBlur=field.actions.onBlur
+            }}
+          {{/form.field}}
+        </div>
+
+        <br />
+
+        <button class="btn btn-primary" {{action form.actions.submit}}>Save</button>
+        <button class="btn btn-danger" {{action form.actions.cancel}}>Cancel</button>
+      {{/x-form}}
+    </div>
   </div>
-
-  <div>
-    <h3>Last Name</h3>
-    {{#form.field property="lastName" as |field|}}
-      {{one-way-input
-        value=field.value
-        update=field.actions.onChange
-        onBlur=field.actions.onBlur
-      }}
-    {{/form.field}}
-  </div>
-
-  <div>
-    <h3>Favorite Band</h3>
-    {{#form.field property="favoriteBand" as |field|}}
-      {{one-way-select
-        value=field.value
-        options=bands
-        update=field.actions.onChange
-        onBlur=field.actions.onBlur
-      }}
-    {{/form.field}}
-  </div>
-
-  <br />
-
-  <button {{action form.actions.submit}}>Save</button>
-  <button {{action form.actions.cancel}}>Cancel</button>
-{{/x-form}}
+  <div class="col-md-6"></div>
+</div>
