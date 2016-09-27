@@ -11,11 +11,15 @@ export default Ember.Component.extend({
 
   data: null,
 
-  buffer: null,
+  // buffer: null,
+
+  buffer: Ember.computed('_changeBuffer.buffer', function() {
+    return this.get('_changeBuffer.buffer');
+  }),
 
   init() {
     this._super(...arguments);
-    this.set('buffer', new ChangeBuffer(get(this, 'data')));
+    this.set('_changeBuffer', new ChangeBuffer(get(this, 'data')));
   },
 
   actions: {
