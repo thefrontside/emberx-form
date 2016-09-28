@@ -1,18 +1,16 @@
-{{#with (changeset data validations) as |changeset|}}
-  {{yield
-    (hash
+{{yield
+  (hash
+    changeset=changeset
+    field=(component "x-field"
       changeset=changeset
-      field=(component "x-field"
-        changeset=changeset
-        validate=(action 'validateProperty' changeset)
-      )
-      isSubmitting=isSubmitting
-      isInvalid=changeset.isInvalid
-      isUnsubmittable=(or changeset.isPristine changeset.isInvalid isSubmitting)
-      actions=(hash
-        submit=(action 'submit' changeset)
-        cancel=(action 'cancel' changeset)
-      )
+      validate=(action 'validateProperty' changeset)
     )
-  }}
-{{/with}}
+    isSubmitting=isSubmitting
+    isInvalid=changeset.isInvalid
+    isUnsubmittable=(or changeset.isPristine changeset.isInvalid isSubmitting)
+    actions=(hash
+      submit=(action 'submit' changeset)
+      cancel=(action 'cancel' changeset)
+    )
+  )
+}}

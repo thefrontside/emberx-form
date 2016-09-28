@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import Changeset from 'ember-changeset';
+import lookupValidator from 'ember-changeset-validations';
 import applyChangeset from '../utils/apply-changeset';
 import layout from '../templates/components/x-field';
 
@@ -66,6 +68,15 @@ export default Ember.Component.extend({
    * @type {Function}
    */
   cancel: Ember.K,
+
+  init() {
+    this._super(...arguments);
+    this.changeset = new Changeset(
+      this.get('data'),
+      lookupValidator(this.get('validations')),
+      this.get('validations')
+    );
+  },
 
   actions: {
     /**
