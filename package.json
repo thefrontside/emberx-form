@@ -9,7 +9,10 @@
   "scripts": {
     "build": "ember build",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "test:dev": "ember test --filter ESLint -i",
+    "tdd": "npm run test:dev -- -s",
+    "lint": "ember test --filter ESLint"
   },
   "repository": "https://github.com/thefrontside/emberx-form",
   "engines": {
