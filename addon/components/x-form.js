@@ -71,10 +71,12 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
+    let validations = this.get('validations') ? this.get('validations') : {};
+
     this.changeset = new Changeset(
       this.get('data'),
-      lookupValidator(this.get('validations')),
-      this.get('validations')
+      lookupValidator(validations),
+      validations
     );
   },
 
