@@ -1,3 +1,4 @@
+/* eslint no-console: "off" */
 import Ember from 'ember';
 import DummyValidations from '../validators/dummy';
 
