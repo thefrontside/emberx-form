@@ -1,7 +1,10 @@
+/* eslint no-console: "off" */
 import Ember from 'ember';
 import DummyValidations from '../validators/dummy';
 
 export default Ember.Controller.extend({
+  store: Ember.inject.service(),
+
   DummyValidations,
 
   bands: ['Sonic Youth', 'Dinosaur Jr.', 'Shellac', 'Velvet Underground'],
@@ -9,16 +12,16 @@ export default Ember.Controller.extend({
   actions: {
     save(data) {
       console.log('saving');
-      console.log(data);
-      return Ember.RSVP.resolve(data);
+      return this.store.createRecord('person', data);
     },
 
     onError(err) {
       throw new Error(err);
     },
 
-    onSuccess() {
+    onSuccess(record) {
       console.log('succeeded!');
+      record.save();
     },
 
     cancel() {

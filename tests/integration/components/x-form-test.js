@@ -77,7 +77,7 @@ describeComponent(
         expect(this.didCall.onSubmit).to.be.false;
         expect(this.didCall.onCancel).to.be.false;
       });
-      describe("clicking sumbit", function() {
+      describe("clicking submit", function() {
         beforeEach(function() {
           this.$('.submit').click();
         });
@@ -125,7 +125,7 @@ describeComponent(
         expect(this.didCall.onError).to.be.false;
       });
 
-      describe("clicking sumbit", function() {
+      describe("clicking submit", function() {
         beforeEach(function() {
           this.$('.submit').click();
         });
