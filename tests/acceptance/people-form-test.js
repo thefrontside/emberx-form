@@ -48,6 +48,10 @@ describe('Acceptance: PeopleForm', function() {
         people.form.lastName.fillInAndBlur('f');
       });
 
+      it('has a value in first name', function() {
+        expect(people.form.firstName.value).to.equal('c');
+      });
+
       it('still has a disabled submit button', function() {
         expect(people.form.submitButton.isDisabled).to.be.true;
       });
@@ -74,6 +78,10 @@ describe('Acceptance: PeopleForm', function() {
         people.form.firstName.fillInAndBlur('john');
         people.form.lastName.fillInAndBlur('smith');
         people.form.favoriteBand.selectAndBlur('Shellac');
+      });
+
+      it('has the correct value', function() {
+        expect(people.form.firstName.value).to.equal('john');
       });
 
       it('enables the submit button', function() {
