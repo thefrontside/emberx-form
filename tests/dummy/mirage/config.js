@@ -26,4 +26,6 @@ export default function() {
 
   this.get('/people');
   this.post('/people');
+  this.get('/people/:id');
+  this.patch('/people/:id');
 }

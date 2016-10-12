@@ -36,6 +36,12 @@ export default Ember.Component.extend({
   validations: null,
 
   /**
+   * @property refreshChangeset - Should the changeset reset after a successful submit?
+   * @type {Boolean}
+   */
+  resetChangeset: false,
+
+  /**
    * A flag for indicating whether the form is currently in the process of submitting
    * @private
    * @type {Boolean}
@@ -67,7 +73,7 @@ export default Ember.Component.extend({
    * @property onCancel - Action for cancel/close behavior
    * @type {Function}
    */
-  cancel: Ember.K,
+  onCancel: Ember.K,
 
   init() {
     this._super(...arguments);
@@ -100,11 +106,12 @@ export default Ember.Component.extend({
      */
     submit(changeset) {
       set(this, 'isSubmitting', true);
+      let changes;
 
       changeset.validate()
         .then(() => {
           if (get(changeset, 'isValid')) {
-            let changes = applyChangeset(changeset);
+            changes = applyChangeset(changeset);
             let submission = get(this, 'onSubmit')(changes);
 
             return RSVP.resolve(submission)
@@ -118,6 +125,13 @@ export default Ember.Component.extend({
           }
         })
         .finally(() => {
+          if(this.get('resetChangeset')) {
+            this.set('changeset', new Changeset(
+              changes,
+              lookupValidator(this.get('validations')),
+              this.get('validations')
+            ));
+          }
           set(this, 'isSubmitting', false);
         });
     },
