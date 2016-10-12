@@ -67,17 +67,21 @@ export default Ember.Component.extend({
    * @property onCancel - Action for cancel/close behavior
    * @type {Function}
    */
-  cancel: Ember.K,
+  onCancel: Ember.K,
 
   init() {
     this._super(...arguments);
+    this._setUpChangeset();
+  },
+
+  _setUpChangeset() {
     let validations = this.get('validations') ? this.get('validations') : {};
 
-    this.changeset = new Changeset(
+    set(this, 'changeset', new Changeset(
       this.get('data'),
       lookupValidator(validations),
       validations
-    );
+    ));
   },
 
   actions: {
@@ -118,6 +122,7 @@ export default Ember.Component.extend({
           }
         })
         .finally(() => {
+          this._setUpChangeset();
           set(this, 'isSubmitting', false);
         });
     },
