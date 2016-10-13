@@ -7,7 +7,8 @@ import {
   hasClass,
   is,
   collection,
-  text
+  value,
+  text,
 } from 'ember-cli-page-object';
 
 // Make a basic page object component and merge in options
@@ -36,6 +37,8 @@ const makeButton = (selector) => {
 const makeField = (fieldSelector, inputSelector, [name, action]) => {
   let options = {
     hasErrors: hasClass('has-error'),
+
+    value: value(inputSelector),
 
     [name]: action(inputSelector),
     blur: triggerable('blur', inputSelector),
