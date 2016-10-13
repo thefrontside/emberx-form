@@ -8,6 +8,7 @@
     isSubmitting=isSubmitting
     isInvalid=changeset.isInvalid
     isUnsubmittable=(or changeset.isPristine changeset.isInvalid isSubmitting)
+    hasEdits=(or changeset.isDirty changeset.isInvalid isSubmitting)
     actions=(hash
       submit=(action 'submit' changeset)
       cancel=(action 'cancel' changeset)
