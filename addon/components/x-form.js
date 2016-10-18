@@ -74,6 +74,10 @@ export default Ember.Component.extend({
     this._setUpChangeset();
   },
 
+  didUpdateAttrs() {
+    this._setUpChangeset();
+  },
+
   _setUpChangeset() {
     let validations = this.get('validations') ? this.get('validations') : {};
 
