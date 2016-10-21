@@ -3,15 +3,13 @@ import {
   visitable,
   fillable,
   selectable,
-  collection,
-  text,
 } from 'ember-cli-page-object';
 
 import makeButton from '../helpers/make-button';
 import makeField from '../helpers/make-field';
 
 export default create({
-  visit: visitable('/'),
+  visit: visitable('/reset-changeset'),
 
   form: {
     scope: '#test-form',
@@ -22,15 +20,5 @@ export default create({
 
     submitButton: makeButton('[data-test-submit-button]'),
     cancelButton: makeButton('[data-test-cancel-button]')
-  },
-
-  list: collection({
-    scope: '[data-test-people-list]',
-    itemScope: '[data-test-people-list-item]',
-
-    item: {
-      name: text('h4.list-group-item-heading'),
-      favoriteBand: text('p.list-group-item-text')
-    }
-  })
+  }
 });
