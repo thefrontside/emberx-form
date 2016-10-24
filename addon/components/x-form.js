@@ -4,7 +4,7 @@ import lookupValidator from 'ember-changeset-validations';
 import applyChangeset from '../utils/apply-changeset';
 import layout from '../templates/components/x-field';
 
-const { get, set, RSVP } = Ember;
+const { computed, get, set, RSVP } = Ember;
 
 
 /**
@@ -71,18 +71,20 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this._setUpChangeset();
+    if(!this.get('data')) {
+      throw new Error('x-form needs data');
+    }
   },
 
-  _setUpChangeset() {
+  changeset: computed('data', 'validations', function() {
     let validations = this.get('validations') ? this.get('validations') : {};
 
-    set(this, 'changeset', new Changeset(
+    return new Changeset(
       this.get('data'),
       lookupValidator(validations),
       validations
-    ));
-  },
+    );
+  }),
 
   actions: {
     /**
@@ -122,7 +124,7 @@ export default Ember.Component.extend({
           }
         })
         .finally(() => {
-          this._setUpChangeset();
+          set(this, 'validations', Object.assign({}, get(this, 'validations')));
           set(this, 'isSubmitting', false);
         });
     },
