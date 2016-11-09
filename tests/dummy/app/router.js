@@ -8,6 +8,10 @@ const Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('reset-changeset');
+  this.route('route-transitions', function() {
+    this.route('new');
+    this.route('edit', { path: '/:person_id' });
+  });
 });
 
 export default Router;

@@ -34,7 +34,7 @@ describe('Acceptance: PeopleForm', function() {
 
     it('contains the list and has the correct length', function() {
       expect(people.list().isVisible).to.be.true;
-      expect(people.list().count, 'There should only be one person in the list').to.equal(1);
+      expect(people.list().count, 'There should be two people in the list').to.equal(2);
     });
 
     it('starts with a disabled submit button', function() {
@@ -100,12 +100,12 @@ describe('Acceptance: PeopleForm', function() {
         });
 
         it('adds a new person to the list', function() {
-          expect(people.list().count).to.equal(2);
+          expect(people.list().count).to.equal(3);
         });
 
         it('creates a new person with the correct information', function() {
-          expect(people.list(1).name).to.equal('john smith');
-          expect(people.list(1).favoriteBand).to.equal('Favorite Band: Shellac');
+          expect(people.list(2).name).to.equal('john smith');
+          expect(people.list(2).favoriteBand).to.equal('Favorite Band: Shellac');
         });
       });
     });
