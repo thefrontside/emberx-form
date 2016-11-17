@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 import applyChangeset from '../utils/apply-changeset';
-import layout from '../templates/components/x-field';
+import layout from '../templates/components/x-form';
 
 const { computed, get, set, RSVP } = Ember;
 
