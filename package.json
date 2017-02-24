@@ -1,6 +1,6 @@
 {
   "name": "emberx-form",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A set of components for building dynamic forms. Built on top of ember-changeset.",
   "directories": {
     "doc": "doc",
@@ -58,7 +58,7 @@
     "ember-changeset-validations": "^1.2.0",
     "ember-cli-babel": "^5.1.6",
     "ember-cli-htmlbars": "^1.0.3",
-    "ember-truth-helpers": "1.2.0"
+    "ember-truth-helpers": "^1.3.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
