@@ -1,6 +1,6 @@
 {
   "name": "emberx-form",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A set of components for building dynamic forms. Built on top of ember-changeset.",
   "directories": {
     "doc": "doc",
