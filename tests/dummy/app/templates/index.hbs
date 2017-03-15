@@ -13,7 +13,9 @@
         onCancel=(action 'cancel') as |form|
       }}
         {{#form.field property="firstName" as |field|}}
-          <div data-test-first-name class={{concat "form-group" (if field.errors.validation " has-error")}}>
+          <div data-test-first-name data-test-is-pristine={{form.isPristine}}
+               class={{concat "form-group" (if field.errors.validation " has-error")}}>
+
             <h3>First Name</h3>
               {{#each field.errors as |error|}}
                 {{error}}

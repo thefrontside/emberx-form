@@ -2,6 +2,8 @@ import {
   create,
   visitable,
   fillable,
+  hasClass,
+  is,
   selectable,
   collection,
   text,
@@ -21,7 +23,12 @@ export default create({
     favoriteBand: makeField('[data-test-favorite-band]', '#form-favorite-band', ['select', selectable]),
 
     submitButton: makeButton('[data-test-submit-button]'),
-    cancelButton: makeButton('[data-test-cancel-button]')
+    cancelButton: makeButton('[data-test-cancel-button]'),
+
+    isPristine: is('[data-test-is-pristine=true]'),
+    get isDirty() {
+      return !this.isPristine;
+    }
   },
 
   list: collection({

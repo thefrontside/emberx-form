@@ -79,6 +79,7 @@ export default Ember.Component.extend({
   changeset: computed('data', 'validations', function() {
     let validations = this.get('validations') ? this.get('validations') : {};
 
+    console.log("OH HEY");
     return new Changeset(
       this.get('data'),
       lookupValidator(validations),
