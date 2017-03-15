@@ -23,8 +23,10 @@ export default Ember.Component.extend({
 
   tagName: 'form',
 
-  isPristine: true,
-  isDirty: false,
+  isPristine: Ember.computed.not('isDirty'),
+  isDirty: Ember.computed('original', 'buffer', function() {
+    return this.get('original') !== this.get('buffer');
+  }),
 
   /**
    * @property data - provides the initial values of the form fields
@@ -74,10 +76,23 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
+    this.reset();
     if(!this.get('data')) {
       throw new Error('x-form needs data');
     }
   },
+
+  setField(key, value) {
+    this.set('buffer', Object.assign(
+      {}, { [key]: value }, this.get('buffer'))
+    );
+    this.get('changeset').set(key, value);
+  },
+
+  debugBuffer: Ember.computed(function() {
+    console.log(this.get('buffer'));
+  }),
+
 
   changeset: computed('data', 'validations', function() {
     let validations = this.get('validations') ? this.get('validations') : {};
@@ -90,6 +105,12 @@ export default Ember.Component.extend({
     );
   }),
 
+  reset() {
+    let buffer = {};
+    this.set('buffer', buffer);
+    this.set('original', buffer);
+  },
+
   actions: {
     /**
      * [validateProperty call the validations for a specific property in a changeset]
@@ -98,6 +119,7 @@ export default Ember.Component.extend({
      * @return {Promise}
      */
     validateProperty(changeset, prop) {
+      console.log('validateProperty')
       return changeset.validate(prop);
     },
 
@@ -120,6 +142,7 @@ export default Ember.Component.extend({
             return RSVP.resolve(submission)
               .then((record) => {
                 set(this, 'isSubmitting', false);
+                this.reset();
                 return get(this, 'onSuccess')(record);
               }, (err) => {
                 set(this, 'isSubmitting', false);
@@ -140,6 +163,7 @@ export default Ember.Component.extend({
      */
     cancel(changeset) {
       changeset.rollback();
+      this.reset();
       get(this, 'onCancel')();
     }
   }

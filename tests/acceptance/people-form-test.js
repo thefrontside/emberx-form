@@ -59,7 +59,7 @@ describe('Acceptance: PeopleForm', function() {
       });
 
       it('indicates the form is dirty and not pristine', function() {
-        expect(people.form.isDirty).to.equal(true, 'Should not dirty');
+        expect(people.form.isDirty).to.equal(true, 'Should be dirty');
         expect(people.form.isPristine).to.equal(false, 'Should not pristine');
       });
 
