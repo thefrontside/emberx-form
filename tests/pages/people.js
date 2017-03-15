@@ -1,9 +1,11 @@
 import {
+  attribute,
   create,
   visitable,
   fillable,
   hasClass,
   is,
+  isVisible,
   selectable,
   collection,
   text,
@@ -25,10 +27,8 @@ export default create({
     submitButton: makeButton('[data-test-submit-button]'),
     cancelButton: makeButton('[data-test-cancel-button]'),
 
-    isPristine: is('[data-test-is-pristine=true]'),
-    get isDirty() {
-      return !this.isPristine;
-    }
+    isPristine: isVisible('[data-test-is-pristine]'),
+    isDirty: isVisible('[data-test-is-dirty]'),
   },
 
   list: collection({

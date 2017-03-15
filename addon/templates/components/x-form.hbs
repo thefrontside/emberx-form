@@ -6,6 +6,8 @@
       validate=(action 'validateProperty' changeset)
     )
     isSubmitting=isSubmitting
+    isDirty=isDirty
+    isPristine=isPristine
     isInvalid=changeset.isInvalid
     isUnsubmittable=(or changeset.isPristine changeset.isInvalid isSubmitting)
     actions=(hash

@@ -23,6 +23,9 @@ export default Ember.Component.extend({
 
   tagName: 'form',
 
+  isPristine: true,
+  isDirty: false,
+
   /**
    * @property data - provides the initial values of the form fields
    * @type {Object}

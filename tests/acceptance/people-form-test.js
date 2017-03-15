@@ -28,6 +28,7 @@ describe('Acceptance: PeopleForm', function() {
     });
 
     it('starts out as pristine and not dirty', function() {
+      debugger;
       expect(people.form.isDirty).to.equal(false, 'Should be not dirty');
       expect(people.form.isPristine).to.equal(true, 'Should be pristine');
     });
