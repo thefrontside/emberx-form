@@ -89,15 +89,9 @@ export default Ember.Component.extend({
     this.get('changeset').set(key, value);
   },
 
-  debugBuffer: Ember.computed(function() {
-    console.log(this.get('buffer'));
-  }),
-
-
   changeset: computed('data', 'validations', function() {
     let validations = this.get('validations') ? this.get('validations') : {};
 
-    console.log("OH HEY");
     return new Changeset(
       this.get('data'),
       lookupValidator(validations),
@@ -119,7 +113,6 @@ export default Ember.Component.extend({
      * @return {Promise}
      */
     validateProperty(changeset, prop) {
-      console.log('validateProperty')
       return changeset.validate(prop);
     },
 

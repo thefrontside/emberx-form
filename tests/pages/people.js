@@ -1,10 +1,7 @@
 import {
-  attribute,
   create,
   visitable,
   fillable,
-  hasClass,
-  is,
   isVisible,
   selectable,
   collection,

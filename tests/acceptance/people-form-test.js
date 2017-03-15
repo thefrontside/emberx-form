@@ -22,13 +22,12 @@ describe('Acceptance: PeopleForm', function() {
     destroyApp(application);
   });
 
-  describe.only('visiting the people form page', function() {
+  describe('visiting the people form page', function() {
     beforeEach(function() {
       people.visit();
     });
 
     it('starts out as pristine and not dirty', function() {
-      debugger;
       expect(people.form.isDirty).to.equal(false, 'Should be not dirty');
       expect(people.form.isPristine).to.equal(true, 'Should be pristine');
     });
