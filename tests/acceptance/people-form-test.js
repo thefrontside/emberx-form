@@ -27,6 +27,11 @@ describe('Acceptance: PeopleForm', function() {
       people.visit();
     });
 
+    it('starts out as pristine and not dirty', function() {
+      expect(people.form.isDirty).to.equal(false, 'Should be not dirty');
+      expect(people.form.isPristine).to.equal(true, 'Should be pristine');
+    });
+
     it('contains the form', function() {
       expect(currentPath()).to.equal('index');
       expect(people.form.isVisible).to.be.true;
@@ -52,6 +57,11 @@ describe('Acceptance: PeopleForm', function() {
         expect(people.form.firstName.value).to.equal('c');
       });
 
+      it('indicates the form is dirty and not pristine', function() {
+        expect(people.form.isDirty).to.equal(true, 'Should be dirty');
+        expect(people.form.isPristine).to.equal(false, 'Should not pristine');
+      });
+
       it('still has a disabled submit button', function() {
         expect(people.form.submitButton.isDisabled).to.be.true;
       });
@@ -59,6 +69,11 @@ describe('Acceptance: PeopleForm', function() {
       it('has errors', function() {
         expect(people.form.firstName.hasErrors).to.be.true;
         expect(people.form.lastName.hasErrors).to.be.true;
+
+        it('is dirty', function() {
+          expect(people.form.isDirty).to.equal(true, 'Should not dirty');
+          expect(people.form.isPristine).to.equal(false, 'Should not pristine');
+        });
       });
 
       describe('clicking cancel', function() {
@@ -69,6 +84,11 @@ describe('Acceptance: PeopleForm', function() {
         it('rolls back to an empty state', function() {
           expect(people.form.firstName.value).to.equal('');
           expect(people.form.lastName.value).to.equal('');
+        });
+
+        it('ends up pristine and not dirty', function() {
+          expect(people.form.isDirty).to.equal(false, 'Should be not dirty');
+          expect(people.form.isPristine).to.equal(true, 'Should be pristine');
         });
       });
     });
@@ -106,6 +126,11 @@ describe('Acceptance: PeopleForm', function() {
         it('creates a new person with the correct information', function() {
           expect(people.list(2).name).to.equal('john smith');
           expect(people.list(2).favoriteBand).to.equal('Favorite Band: Shellac');
+        });
+
+        it('ends up pristine and not dirty', function() {
+          expect(people.form.isDirty).to.equal(false, 'Should be not dirty');
+          expect(people.form.isPristine).to.equal(true, 'Should be pristine');
         });
       });
     });

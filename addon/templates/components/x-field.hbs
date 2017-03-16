@@ -2,6 +2,8 @@
   (hash
     value=(get changeset property)
     errors=(get changeset.error property)
+    set=(action "set")
+    validate=(action "validate")
     actions=(hash
       onChange=(action (mut (get changeset property)))
       onBlur=(action validate property)

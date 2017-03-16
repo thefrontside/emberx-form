@@ -23,6 +23,11 @@ export default Ember.Component.extend({
 
   tagName: 'form',
 
+  isPristine: Ember.computed.not('isDirty'),
+  isDirty: Ember.computed('original', 'buffer', function() {
+    return this.get('original') !== this.get('buffer');
+  }),
+
   /**
    * @property data - provides the initial values of the form fields
    * @type {Object}
@@ -71,9 +76,17 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
+    this.reset();
     if(!this.get('data')) {
       throw new Error('x-form needs data');
     }
+  },
+
+  setField(key, value) {
+    this.set('buffer', Object.assign(
+      {}, { [key]: value }, this.get('buffer'))
+    );
+    this.get('changeset').set(key, value);
   },
 
   changeset: computed('data', 'validations', function() {
@@ -85,6 +98,12 @@ export default Ember.Component.extend({
       validations
     );
   }),
+
+  reset() {
+    let buffer = {};
+    this.set('buffer', buffer);
+    this.set('original', buffer);
+  },
 
   actions: {
     /**
@@ -116,6 +135,7 @@ export default Ember.Component.extend({
             return RSVP.resolve(submission)
               .then((record) => {
                 set(this, 'isSubmitting', false);
+                this.reset();
                 return get(this, 'onSuccess')(record);
               }, (err) => {
                 set(this, 'isSubmitting', false);
@@ -136,6 +156,7 @@ export default Ember.Component.extend({
      */
     cancel(changeset) {
       changeset.rollback();
+      this.reset();
       get(this, 'onCancel')();
     }
   }

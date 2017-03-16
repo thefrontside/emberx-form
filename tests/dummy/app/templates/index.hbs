@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Welcome to EmberX-Form!</h2>
+  <h2>Welcome to EmberX-Form! Yo!</h2>
   <div class="row">
     <div class="col-xs-6">
       {{#x-form
@@ -12,8 +12,15 @@
         onError=(action 'onError')
         onCancel=(action 'cancel') as |form|
       }}
+        <div>isDirty? {{form.isDirty}}</div>
+        <div>form.changeset.isDirty? {{form.changeset.isDirty}}</div>
+
         {{#form.field property="firstName" as |field|}}
-          <div data-test-first-name class={{concat "form-group" (if field.errors.validation " has-error")}}>
+          <div data-test-first-name
+               data-test-is-pristine={{form.isPristine}}
+               data-test-is-dirty={{form.isDirty}}
+               class={{concat "form-group" (if field.errors.validation " has-error")}}>
+
             <h3>First Name</h3>
               {{#each field.errors as |error|}}
                 {{error}}
@@ -22,8 +29,8 @@
                 class="form-control"
                 id="form-first-name"
                 value=field.value
-                update=field.actions.onChange
-                onBlur=field.actions.onBlur
+                update=field.set
+                onBlur=field.validate
               }}
           </div>
         {{/form.field}}
