@@ -54,20 +54,20 @@ export default Ember.Component.extend({
     * a resolved Promise
     * @type {Function}
     */
-  onSuccess: Ember.K,
+  onSuccess() {},
 
   /**
    * @property onError - Handler for errors resulting from the `onSubmit` action, called when
    * `onSubmit` returns a rejected Promise
    * @type {Function}
    */
-  onError: Ember.K,
+  onError() {},
 
   /**
    * @property onCancel - Action for cancel/close behavior
    * @type {Function}
    */
-  onCancel: Ember.K,
+  onCancel() {},
 
   init() {
     this._super(...arguments);
