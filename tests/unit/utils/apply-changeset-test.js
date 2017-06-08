@@ -1,4 +1,3 @@
-/* jshint expr:true */
 import { expect } from 'chai';
 import { describe, it, beforeEach } from 'mocha';
 import applyChangeset from 'emberx-form/utils/apply-changeset';
