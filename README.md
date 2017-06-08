@@ -8,7 +8,6 @@
 
 * `git clone` this repository
 * `npm install`
-* `bower install`
 
 ## Running
 
