@@ -119,6 +119,7 @@ export default Ember.Component.extend({
             return RSVP.resolve(submission)
               .then((record) => {
                 set(this, 'isSubmitting', false);
+                set(this, 'validations', Object.assign({}, get(this, 'validations')));
                 return get(this, 'onSuccess')(record);
               }, (err) => {
                 set(this, 'isSubmitting', false);
@@ -127,7 +128,6 @@ export default Ember.Component.extend({
           }
         })
         .finally(() => {
-          set(this, 'validations', Object.assign({}, get(this, 'validations')));
           set(this, 'isSubmitting', false);
         });
     },
