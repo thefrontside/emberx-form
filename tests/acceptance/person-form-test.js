@@ -68,7 +68,7 @@ describe('Acceptance: PersonForm', function() {
         });
       });
 
-      describe('clicking save', function() {
+      describe('successfully clicking save', function() {
         beforeEach(function() {
           person.form.submitButton.click();
         });
@@ -76,6 +76,23 @@ describe('Acceptance: PersonForm', function() {
         it('hides the save and cancel buttons', function() {
           expect(person.form.cancelButton.isVisible).to.be.false;
           expect(person.form.submitButton.isVisible).to.be.false;
+        });
+
+        it('retains the edited information in the form', function() {
+          expect(person.form.firstName.value).to.equal('Carlos');
+          expect(person.form.lastName.value).to.equal('Correa');
+        });
+      });
+
+      describe('clicking save, but the save fails', function() {
+        beforeEach(function() {
+          server.patch(`/people/:id`, {}, 500);
+          person.form.submitButton.click();
+        });
+
+        it('does not hide the save and cancel buttons', function() {
+          expect(person.form.cancelButton.isVisible).to.be.true;
+          expect(person.form.submitButton.isVisible).to.be.true;
         });
 
         it('retains the edited information in the form', function() {

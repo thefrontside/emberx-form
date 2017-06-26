@@ -12,16 +12,20 @@ export default Ember.Controller.extend({
   actions: {
     save(data) {
       console.log('saving');
-      return this.store.createRecord('person', data);
+      let person = this.store.createRecord('person', data);
+
+      return person.save().catch((err) => {
+        person.rollbackAttributes();
+        throw err;
+      })
     },
 
     onError(err) {
-      throw new Error(err);
+      console.log('error', err);
     },
 
-    onSuccess(record) {
+    onSuccess() {
       console.log('succeeded!');
-      record.save();
     },
 
     cancel() {
