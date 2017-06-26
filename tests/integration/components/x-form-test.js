@@ -23,7 +23,7 @@ describe('Integration: EmberxFormComponent', function() {
     });
   });
 
-  describe("rendering x-form without data", function() {
+  describe.skip("rendering x-form without data", function() {
     beforeEach(function() {
       try {
         this.render(hbs`{{x-form}}`);
