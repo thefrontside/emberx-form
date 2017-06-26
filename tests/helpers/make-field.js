@@ -12,7 +12,7 @@ import makeComponent from '../helpers/make-component';
 
 const makeField = (fieldSelector, inputSelector, [name, action]) => {
   let options = {
-    hasErrors: hasClass('has-error'),
+    hasErrors: hasClass('has-danger'),
 
     value: value(inputSelector),
 
