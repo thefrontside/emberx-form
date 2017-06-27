@@ -23,7 +23,8 @@
     "test": "ember try:each",
     "test:dev": "ember test --filter ESLint -i",
     "tdd": "npm run test:dev -- -s",
-    "lint": "ember test --filter ESLint"
+    "lint": "ember test --filter ESLint",
+    "postinstall": "npm rebuild node-sass"
   },
   "dependencies": {
     "ember-changeset-validations": "^1.2.7",
