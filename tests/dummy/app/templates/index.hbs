@@ -1,7 +1,6 @@
-<div class="container">
-  <h2>Welcome to EmberX-Form!</h2>
+<div class="container page-container">
   <div class="row">
-    <div class="col-xs-6">
+    <div class="col-sm-6">
       {{#x-form
         class="test-form"
         id="test-form"
@@ -13,8 +12,8 @@
         onCancel=(action 'cancel') as |form|
       }}
         {{#form.field property="firstName" as |field|}}
-          <div data-test-first-name class={{concat "form-group" (if field.errors.validation " has-error")}}>
-            <h3>First Name</h3>
+          <div data-test-first-name class={{concat "form-group" (if field.errors.validation " has-danger")}}>
+            <label class="form-control-label">First Name</label>
               {{#each field.errors as |error|}}
                 {{error}}
               {{/each}}
@@ -29,8 +28,8 @@
         {{/form.field}}
 
         {{#form.field property="lastName" as |field|}}
-          <div data-test-last-name class={{concat "form-group" (if field.errors.validation " has-error")}}>
-            <h3>Last Name</h3>
+          <div data-test-last-name class={{concat "form-group" (if field.errors.validation " has-danger")}}>
+            <label class="form-control-label">Last Name</label>
               {{one-way-input
                 class="form-control"
                 id="form-last-name"
@@ -42,8 +41,8 @@
         {{/form.field}}
 
         {{#form.field property="favoriteBand" as |field|}}
-          <div data-test-favorite-band class={{concat "form-group" (if field.errors.validation " has-error")}}>
-            <h3>Favorite Band</h3>
+          <div data-test-favorite-band class={{concat "form-group" (if field.errors.validation " has-danger")}}>
+            <label class="form-control-label">Favorite Band</label>
               {{one-way-select
                 class="form-control"
                 id="form-favorite-band"
@@ -58,13 +57,14 @@
         <br />
 
         <button data-test-submit-button class="btn btn-primary" disabled={{form.isUnsubmittable}} {{action form.actions.submit}}>Save</button>
-        <button data-test-cancel-button class="btn btn-danger" {{action form.actions.cancel}}>Cancel</button>
+        <button data-test-cancel-button class="btn btn-secondary" {{action form.actions.cancel}}>Cancel</button>
       {{/x-form}}
     </div>
-    <div class="col-xs-6">
-      <div data-test-people-list class="list-group">
+
+    <div class="col-sm-6">
+      <div data-test-people-list class="list-group person-band-list-group">
         {{#each model as |person|}}
-          <div data-test-people-list-item class="list-group-item">
+          <div data-test-people-list-item class="list-group-item flex-column align-items-start">
             <h4 class="list-group-item-heading">{{person.firstName}} {{person.lastName}}</h4>
             <p class="list-group-item-text">Favorite Band: {{person.favoriteBand}}</p>
           </div>

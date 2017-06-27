@@ -1,9 +1,10 @@
-<div class="container">
+<div class="container page-container">
   <h1>Route Transitions Test</h1>
-  <ul>
-    <li>{{#link-to 'route-transitions.edit' 1 class='test-first-edit-form'}}ID 1{{/link-to}}</li>
-    <li>{{#link-to 'route-transitions.edit' 2 class='test-second-edit-form'}}ID 2{{/link-to}}</li>
-    <li>{{#link-to 'route-transitions.new' class='test-create-form'}}New{{/link-to}}</li>
+  <ul class="nav nav-pills">
+    <li class="nav-item">{{#link-to 'route-transitions.edit' 1 class='nav-link test-first-edit-form'}}ID 1{{/link-to}}</li>
+    <li class="nav-item">{{#link-to 'route-transitions.edit' 2 class='nav-link test-second-edit-form'}}ID 2{{/link-to}}</li>
+    <li class="nav-item">{{#link-to 'route-transitions.new' class='nav-link test-create-form'}}New{{/link-to}}</li>
   </ul>
+  <hr>
   {{outlet}}
 </div>

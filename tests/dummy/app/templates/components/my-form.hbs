@@ -6,8 +6,8 @@
 }}
 
   {{#form.field property="firstName" as |field|}}
-    <div data-test-first-name class={{concat "form-group" (if field.errors.validation " has-error")}}>
-      <h3>First Name</h3>
+    <div data-test-first-name class={{concat "form-group" (if field.errors.validation " has-danger")}}>
+      <label class="form-control-label">First Name</label>
         {{#each field.errors as |error|}}
           {{error}}
         {{/each}}
@@ -22,8 +22,8 @@
   {{/form.field}}
 
   {{#form.field property="lastName" as |field|}}
-    <div data-test-last-name class={{concat "form-group" (if field.errors.validation " has-error")}}>
-      <h3>Last Name</h3>
+    <div data-test-last-name class={{concat "form-group" (if field.errors.validation " has-danger")}}>
+      <label class="form-control-label">Last Name</label>
         {{one-way-input
           class="form-control"
           id="form-last-name"
@@ -35,8 +35,8 @@
   {{/form.field}}
 
   {{#form.field property="favoriteBand" as |field|}}
-    <div data-test-favorite-band class={{concat "form-group" (if field.errors.validation " has-error")}}>
-      <h3>Favorite Band</h3>
+    <div data-test-favorite-band class={{concat "form-group" (if field.errors.validation " has-danger")}}>
+      <label class="form-control-label">Favorite Band</label>
         {{one-way-select
           class="form-control"
           id="form-favorite-band"
@@ -50,7 +50,7 @@
 
   {{#if (or form.changeset.isDirty form.changeset.isInvalid)}}
     <button data-test-submit-button class="btn btn-primary" disabled={{form.isUnsubmittable}} {{action form.actions.submit}}>Save</button>
-    <button data-test-cancel-button class="btn btn-danger" {{action form.actions.cancel}}>Cancel</button>
+    <button data-test-cancel-button class="btn btn-secondary" {{action form.actions.cancel}}>Cancel</button>
   {{/if}}
 
 {{/x-form}}
