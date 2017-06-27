@@ -42,32 +42,44 @@ describe('Acceptance: PeopleForm', function() {
     });
 
     describe('filling out the form with insufficient data', function() {
-      beforeEach(function() {
-        people.form.firstName.fillInAndBlur('c');
-        people.form.lastName.fillInAndBlur('f');
-      });
-
-      it('has a value in first name', function() {
-        expect(people.form.firstName.value).to.equal('c');
-      });
-
-      it('still has a disabled submit button', function() {
-        expect(people.form.submitButton.isDisabled).to.be.true;
-      });
-
-      it('has errors', function() {
-        expect(people.form.firstName.hasErrors).to.be.true;
-        expect(people.form.lastName.hasErrors).to.be.true;
-      });
-
-      describe('clicking cancel', function() {
+      describe('without a an explicit validation event (in this case, onblur)', function() {
         beforeEach(function() {
-          people.form.cancelButton.click();
+          people.form.firstName.fillIn('c');
         });
 
-        it('rolls back to an empty state', function() {
-          expect(people.form.firstName.value).to.equal('');
-          expect(people.form.lastName.value).to.equal('');
+        it('does not switch the input to an errored state yet', function() {
+          expect(people.form.firstName.hasErrors).to.be.false;
+        });
+      })
+
+      describe('when triggering a blur', function() {
+        beforeEach(function() {
+          people.form.firstName.fillInAndBlur('c');
+          people.form.lastName.fillInAndBlur('f');
+        });
+
+        it('has a value in first name', function() {
+          expect(people.form.firstName.value).to.equal('c');
+        });
+
+        it('still has a disabled submit button', function() {
+          expect(people.form.submitButton.isDisabled).to.be.true;
+        });
+
+        it('has errors', function() {
+          expect(people.form.firstName.hasErrors).to.be.true;
+          expect(people.form.lastName.hasErrors).to.be.true;
+        });
+
+        describe('clicking cancel', function() {
+          beforeEach(function() {
+            people.form.cancelButton.click();
+          });
+
+          it('rolls back to an empty state', function() {
+            expect(people.form.firstName.value).to.equal('');
+            expect(people.form.lastName.value).to.equal('');
+          });
         });
       });
     });
