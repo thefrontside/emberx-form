@@ -105,7 +105,7 @@ describe('Acceptance: PeopleForm', function() {
         });
       });
 
-      describe('submitting the form', function() {
+      describe('submitting the form successfully', function() {
         beforeEach(function() {
           people.form.submitButton.click();
         });
@@ -117,6 +117,22 @@ describe('Acceptance: PeopleForm', function() {
         it('creates a new person with the correct information', function() {
           expect(people.list(2).name).to.equal('john smith');
           expect(people.list(2).favoriteBand).to.equal('Favorite Band: Shellac');
+        });
+      });
+
+      describe('submitting the form unsuccessfully', function() {
+        beforeEach(function() {
+          server.post(`/people`, {}, 500);
+          people.form.submitButton.click();
+        });
+
+        it('does not add a new person to the list', function() {
+          expect(people.list().count).to.equal(2);
+        });
+
+        it('retains the edited information in the form', function() {
+          expect(people.form.firstName.value).to.equal('john');
+          expect(people.form.lastName.value).to.equal('smith');
         });
       });
     });
