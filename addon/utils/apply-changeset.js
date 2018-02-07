@@ -1,6 +1,4 @@
-import Ember from 'ember';
-
-const { get } = Ember;
+import { get } from '@ember/object';
 
 /**
  * Returns a POJO containing the results of applying all (valid) changes from the Changeset

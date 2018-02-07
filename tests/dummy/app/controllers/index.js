@@ -1,13 +1,17 @@
 /* eslint no-console: "off" */
-import Ember from 'ember';
+import Controller from '@ember/controller';
+import { inject as service } from '@ember/service';
 import DummyValidations from '../validators/dummy';
 
-export default Ember.Controller.extend({
-  store: Ember.inject.service(),
+export default Controller.extend({
+  store: service(),
 
   DummyValidations,
 
-  bands: ['Sonic Youth', 'Dinosaur Jr.', 'Shellac', 'Velvet Underground'],
+  init() {
+    this._super(...arguments);
+    this.bands = ['Sonic Youth', 'Dinosaur Jr.', 'Shellac', 'Velvet Underground'];
+  },
 
   actions: {
     save(data) {

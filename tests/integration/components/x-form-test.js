@@ -1,4 +1,4 @@
-import Ember from 'ember';
+import { defer } from 'rsvp';
 import { expect } from 'chai';
 import { setupComponentTest } from 'ember-mocha';
 import { describe, beforeEach, it } from 'mocha';
@@ -12,7 +12,7 @@ describe('Integration: EmberxFormComponent', function() {
   });
 
   beforeEach(function() {
-    let deferred = this.deferred = Ember.RSVP.defer();
+    let deferred = this.deferred = defer();
 
     this.set('data', SimpleData);
     this.set('validations', SimpleValidations);
@@ -31,6 +31,7 @@ describe('Integration: EmberxFormComponent', function() {
         this.err = e;
       }
     });
+
     it("cannot be rendered", function() {
       expect(this.err).to.exist;
     });
@@ -44,6 +45,21 @@ describe('Integration: EmberxFormComponent', function() {
         this.err = e;
       }
     });
+
+    it("renders the form", function() {
+      expect(this.err).not.to.exist;
+    });
+  });
+
+  describe("rendering x-form with data and a field", function() {
+    beforeEach(function() {
+      try {
+        this.render(hbs`{{#x-form data=data as |form|}}{{form.field}}{{/x-form}}`);
+      } catch(e) {
+        this.err = e;
+      }
+    });
+
     it("renders the form", function() {
       expect(this.err).not.to.exist;
     });
