@@ -1,7 +1,11 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import DummyValidations from '../validators/dummy';
 
-export default Ember.Component.extend({
+export default Component.extend({
   DummyValidations,
-  bands: ['Sonic Youth', 'Dinosaur Jr.', 'Shellac', 'Velvet Underground']
+
+  init() {
+    this._super(...arguments);
+    this.bands = ['Sonic Youth', 'Dinosaur Jr.', 'Shellac', 'Velvet Underground'];
+  }
 });

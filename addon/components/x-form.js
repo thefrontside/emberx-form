@@ -1,11 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { computed, get, set } from '@ember/object';
+import RSVP from 'rsvp'
 import Changeset from 'ember-changeset';
 import lookupValidator from 'ember-changeset-validations';
 import applyChangeset from '../utils/apply-changeset';
 import layout from '../templates/components/x-form';
-
-const { computed, get, set, RSVP } = Ember;
-
 
 /**
  * Wraps a native `<form>` element and provides abstractions for working with `ember-changeset`
@@ -18,7 +17,7 @@ const { computed, get, set, RSVP } = Ember;
  * @class Ember.XFormComponent
  * @extends Ember.Component
  */
-export default Ember.Component.extend({
+export default Component.extend({
   layout,
 
   tagName: 'form',
