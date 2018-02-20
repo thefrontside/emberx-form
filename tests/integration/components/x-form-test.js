@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { defer } from 'rsvp';
 import { expect } from 'chai';
 import { setupComponentTest } from 'ember-mocha';
@@ -23,19 +24,21 @@ describe('Integration: EmberxFormComponent', function() {
     });
   });
 
-  describe.skip("rendering x-form without data", function() {
-    beforeEach(function() {
-      try {
-        this.render(hbs`{{x-form}}`);
-      } catch(e) {
-        this.err = e;
-      }
-    });
+  if (Ember.VERSION >= "2.18") {
+    describe("rendering x-form without data", function() {
+      beforeEach(function() {
+        try {
+          this.render(hbs`{{x-form}}`);
+        } catch(e) {
+          this.err = e;
+        }
+      });
 
-    it("cannot be rendered", function() {
-      expect(this.err).to.exist;
+      it("cannot be rendered", function() {
+        expect(this.err).to.exist;
+      });
     });
-  });
+  }
 
   describe("rendering x-form with data", function() {
     beforeEach(function() {
